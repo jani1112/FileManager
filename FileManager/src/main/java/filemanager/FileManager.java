@@ -1,9 +1,14 @@
 package filemanager;
 
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,29 +16,56 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
  * @author 027950206
  */
 public class FileManager {
-
+    
     private final JFrame frame;
-    private final JPanel panel;
+    private final JPanel leftpanel,rightpanel,toppanel;
+    private final JSplitPane splitpane;
     private JMenuBar jmenubar;
     private JMenu menu1,menu2,menu3,menu4;  
     private JMenuItem menuitem11, menuitem12, menuitem13, menuitem14,menuitem15,menuitem21, menuitem22,menuitem31, menuitem32,menuitem41, menuitem42;
     private static JDialog jdbox;
     private JButton btn;
-    private JLabel jlabel;
+    private final JComboBox cb;
+    private final JToolBar toolbar;
+    //private final JTree directorytree;
     
     private FileManager(){
-           
+      /**
+     *Method to generate the directory structure on left panel
+     */
+//    directorytree = new JTree();
+//    File fileRoot = new File("C:/");
+    
     frame = new JFrame();
-    panel = new JPanel();
     AddMenu();
-    frame.add(panel);
-    frame.setSize(500, 700);
+    toppanel = new JPanel();
+    File[] drives = File.listRoots();
+    toolbar = new JToolBar();
+    cb = new JComboBox(drives);
+    cb.setBounds(50, 50,90,20); 
+    toppanel.add(cb);
+    toppanel.add(new JButton("Simple"));
+    toppanel.add(new JButton("Detail"));
+    toolbar.add(toppanel);
+    leftpanel = new JPanel();
+    //leftpanel.add(directorytree);
+    rightpanel = new JPanel();
+    splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftpanel, rightpanel);
+    splitpane.setResizeWeight(0.3);
+    frame.add(toppanel,BorderLayout.NORTH);
+    frame.add(splitpane);
+    frame.setSize(800,600);
     frame.setTitle("CECS 544 File Manager");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
@@ -84,17 +116,19 @@ public class FileManager {
     });
           
           
-          menuitem41.addActionListener((var e) -> {
+          menuitem42.addActionListener((ActionEvent e) -> {
+          Box box = new Box(BoxLayout.Y_AXIS);
           jdbox = new JDialog(frame,"About Product",true);
-          jdbox.setLayout( new FlowLayout() );  
           btn = new JButton("Ok");
+          //btn.setAlignmentX(btn.CENTER_ALIGNMENT);
           btn.addActionListener((ActionEvent e1) -> {
                 FileManager.jdbox.setVisible(false);
           });
-          jdbox.add(new JLabel("CECS 544 File Manager.",JLabel.CENTER));
-          jdbox.add(new JLabel("All Rights Reserved.",JLabel.CENTER));
-          jdbox.setSize(500,200);
-          jdbox.add(btn);
+          box.add(new JLabel("CECS 544 File Manager."));
+          box.add(new JLabel("All Rights Reserved."));
+          box.add(btn);
+          jdbox.add(box);
+          jdbox.setSize(300,200);
           jdbox.setVisible(true);
     });
           
@@ -105,7 +139,8 @@ public class FileManager {
     frame.setJMenuBar(jmenubar); 
     
         }
-    
+       
+  
     public static void main(String[] args) { 
         
         FileManager fileManager = new FileManager();
