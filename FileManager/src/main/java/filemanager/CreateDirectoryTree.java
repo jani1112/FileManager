@@ -4,30 +4,24 @@
  */
 package filemanager;
 import java.awt.*;
-import java.lang.Object;
 import java.awt.event.*;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  *
@@ -46,24 +40,35 @@ public class CreateDirectoryTree  {
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
 
         JTree tree = new JTree(treeModel);
-        tree.setCellRenderer(new DefaultTreeCellRenderer() {
-            private final Icon loadIcon = UIManager.getIcon("OptionPane.errorIcon");
-            private final Icon saveIcon = UIManager.getIcon("OptionPane.informationIcon");
-            @Override
-            public Component getTreeCellRendererComponent( JTree tree,
-                                                           Object value,
-                                                           boolean bSelected,
-                                                           boolean bExpanded,
-                                                           boolean bLeaf,
-                                                           int iRow,
-                                                           boolean bHasFocus ) {
-                Component c = super.getTreeCellRendererComponent(tree, value,
-                        bSelected, bExpanded, false, iRow, bHasFocus);
+        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
+        //CreateDirectoryTree.setTreeExpandedState(tree, false);
+//        UIManager.put("tree.expandedIcon",  new ImageIcon("plusicons.png"));
+//        UIManager.put("tree.collapsedIcon", new ImageIcon("plusicons.png"));
+//        Icon closedIcon = new ImageIcon("plusicons.png");
+//        renderer.setClosedIcon(closedIcon);
 
-                return c;
-            }
-        });
 
+
+       // tree.setCellRenderer(new DefaultTreeCellRenderer() {
+           // private final Icon loadIcon = UIManager.getIcon("OptionPane.errorIcon");
+           // private final Icon saveIcon = UIManager.getIcon("OptionPane.informationIcon");
+//            @Override
+//            public Component getTreeCellRendererComponent( JTree tree,
+//                                                           Object value,
+//                                                           boolean bSelected,
+//                                                           boolean bExpanded,
+//                                                           boolean bLeaf,
+//                                                           int iRow,
+//                                                           boolean bHasFocus ) {
+//                Component c = super.getTreeCellRendererComponent(tree, value,
+//                        bSelected, bExpanded, false, iRow, bHasFocus);
+//
+//                return c;
+//            }
+        //});
+
+        tree.setShowsRootHandles(true);
+        tree.setRootVisible(true);
         leftpanel.add(tree);
         CreateChildNode ccn = new CreateChildNode(GetCurrDir, root);
         new Thread(ccn).start();
@@ -112,7 +117,20 @@ public class CreateDirectoryTree  {
              }
     
     
-
+//Create Icon for treenodes
+       /** Returns an ImageIcon, or null if the path was invalid.
+     * @param path
+     * @return  */
+    protected static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = CreateDirectoryTree.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+//End of creating icons
     
         private void createlowChildren(File fileRoot, DefaultMutableTreeNode root)
     {
@@ -152,19 +170,7 @@ public class CreateDirectoryTree  {
         }
           list = new JList(model);
           
-          //JScrollPane scrollPane_1 = new JScrollPane(list);
-          //right.setLayout(new BorderLayout());
-//          list.addMouseListener( new MouseAdapter() {
-//       	   public void mouseClicked(MouseEvent e) {
-//       	     if(e.getClickCount() == 2){
-//       	       MusicFile mf = (MusicFile)list.getModel().getElementAt( list.getSelectedIndex());
-//
-//       	       // now play the file
-//       	       System.out.println(mf.getFile());
-//       	      // mf.getFile() );
-//       	     }
-//       	   }
-//       	});
+       
           right.add(list);
           new PopupFeature(list,right);
           right.revalidate();

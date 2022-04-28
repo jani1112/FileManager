@@ -5,7 +5,6 @@
 package filemanager;
 
 import java.awt.event.ActionEvent;
-import javax.accessibility.AccessibleAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,13 +24,13 @@ public class AddMenu {
     private final JMenuBar menubar;
     private final JMenu menu1,menu2,menu3,menu4;
     private final JMenuItem menuitem11,menuitem12,menuitem13,menuitem14,menuitem15,menuitem21,menuitem22
-            ,menuitem32,menuitem41,menuitem42;
-    public JMenuItem menuitem31;
+            ,menuitem41,menuitem42;
+    public JMenuItem menuitem31,menuitem32;
     //private final JDialog jdbox;
     //private final JButton btn;
             
     public AddMenu(JFrame frame){
-        
+
     menubar = new JMenuBar();
     
     menu1 = new JMenu("File");
@@ -73,16 +72,21 @@ public class AddMenu {
     menu4.add(menuitem42);   
     
     //property for menuitems
+    
+    
+    
      menuitem15.addActionListener((var e3)->{
     frame.dispose();
 
     });
      
-     //Create new Jinternal
-     menuitem31.addActionListener((e) -> {
-         
+     //Cascade Frames
+     menuitem32.addActionListener((e) -> {
+        DesktopPane cascade = new DesktopPane(frame);
+        cascade.CascadeFrames();
      });
-             
+     
+       
           menuitem42.addActionListener((ActionEvent e) -> {
           Box box = new Box(BoxLayout.Y_AXIS);
           JDialog jdbox = new JDialog(frame,"About Product",true);
@@ -98,6 +102,24 @@ public class AddMenu {
           jdbox.setSize(300,200);
           jdbox.setVisible(true);
           });
+          
+          menuitem41.addActionListener((ActionEvent e) -> {
+          Box box = new Box(BoxLayout.Y_AXIS);
+          JDialog jdbox = new JDialog(frame,"Help DIalog",true);
+          JButton btn = new JButton("Ok");
+          //btn.setAlignmentX(btn.CENTER_ALIGNMENT);
+          btn.addActionListener((ActionEvent e1) -> {
+                jdbox.setVisible(false);
+          });
+          box.add(new JLabel("File Manager Help."));
+          box.add(new JLabel("All Rights Reserved."));
+          box.add(btn);
+          jdbox.add(box);
+          jdbox.setSize(300,200);
+          jdbox.setVisible(true);
+          });
+          
+          
           
     menubar.add(menu1);
     menubar.add(menu2);

@@ -6,34 +6,42 @@ package filemanager;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  *
  * @author 027950206
  */
 public final class LeftPanel extends JPanel{
-    private final JScrollPane lscrollpane = new JScrollPane();
-    //private JTree dirtree = new JTree();
-    RightPanel rpanel;
-    TopPanel tpanel;
+	RightPanel rpanel;
+        JPanel toppanel;
+        JFrame frame;
+        JButton j;
+        JButton j1;
+
+
     
-   public LeftPanel(JComboBox jbox){
-     
+   public LeftPanel(JComboBox jbox, RightPanel rp,JPanel toppanel,JFrame frame,JButton j, JButton j1){
+    
+    this.toppanel=toppanel;
+	   this.frame=frame;
+	   this.j=j;
+	   this.j1 =j1;
+       
     this.setLayout(new BorderLayout());
-    lscrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    this.add(lscrollpane);
+    this.rpanel = rp;
     GetTree(jbox);
    }
    
-   public void setRPanel(RightPanel lp){
-       rpanel = lp;
-   }
+//   public void setRPanel(RightPanel lp){
+//       rpanel = lp;
+//   }
    
    public void GetTree(JComboBox jbb){
        File GetCurrDir = (File) jbb.getSelectedItem();
-       new CreateDirectoryTree(GetCurrDir,this);   
+       new CreateDirectoryTree(GetCurrDir,this,rpanel,toppanel,frame,j,j1);   
    }
 }
